@@ -1,304 +1,175 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cyber Escape: The Last Firewall</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Liar's Room</title>
 <style>
-:root {
-  --bg: #07111c;
-  --panel: #101f30;
-  --green: #52ffb8;
-  --cyan: #55dfff;
-  --text: #e9f5ff;
-  --muted: #9bb1c7;
-  --red: #ff657a;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: radial-gradient(ellipse at top, #122b42, var(--bg) 70%);
-  color: var(--text);
-  font-family: system-ui, sans-serif;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-}
-.app { width: min(760px, 100%); }
-header { text-align: center; margin-bottom: 22px; }
-.logo { font-size: 34px; }
-h1 { margin: 8px 0; color: var(--green); }
-.subtitle { color: var(--muted); }
-.panel {
-  background: rgba(16,31,48,.96);
-  border: 1px solid #28465b;
-  border-radius: 18px;
-  padding: clamp(18px, 4vw, 32px);
-  box-shadow: 0 18px 60px #0005;
-}
-.stats {
-  display: flex; justify-content: space-between;
-  gap: 12px; flex-wrap: wrap; margin-bottom: 18px;
-}
-.stat {
-  background: #071522; padding: 12px 16px;
-  border-radius: 10px; flex: 1; min-width: 100px;
-}
-.stat small { display:block; color:var(--muted); }
-.stat strong { color:var(--green); font-size: 21px; }
-.progress {
-  height: 8px; background: #25384b;
-  border-radius: 8px; overflow: hidden; margin-bottom: 24px;
-}
-#bar { height:100%; width:0; background:var(--green); transition:width .3s; }
-h2 { color: var(--cyan); }
-p { line-height: 1.6; }
-button {
-  cursor: pointer; font: inherit; font-weight: 650;
-  border: 1px solid #426078; border-radius: 10px;
-  background: #172c40; color: var(--text);
-  padding: 13px 16px; transition: .15s;
-}
-button:hover { border-color:var(--green); transform:translateY(-1px); }
-button:focus-visible { outline:3px solid var(--cyan); outline-offset:3px; }
-.primary { background:var(--green); color:#06151a; border:0; }
-.choices { display:grid; gap:10px; margin:20px 0; }
-.choices button { text-align:left; }
-.choices button:disabled { cursor:default; opacity:.85; transform:none; }
-#feedback {
-  min-height: 50px; padding: 12px;
-  border-radius: 10px; background:#071522; margin:14px 0;
-}
-.good { color:var(--green); }
-.bad { color:var(--red); }
-.hidden { display:none !important; }
-footer { text-align:center; color:var(--muted); font-size:13px; margin-top:18px; }
-@media(max-width:480px) {
-  body { padding:12px; }
-  .stats { gap:8px; }
-  .stat { padding:10px; }
-}
+:root{--bg:#090b12;--panel:#111522;--panel2:#171c2b;--line:#2b3349;--text:#f3f5ff;--muted:#9aa5bf;--accent:#7c8cff;--danger:#ff647c;--good:#55d6a2;--gold:#f2c66d}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#20284a 0,#090b12 50%);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif;min-height:100vh}
+button{font:inherit}.hidden{display:none!important}.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{background:rgba(17,21,34,.94);border:1px solid var(--line);border-radius:20px;box-shadow:0 20px 70px #0008}
+.start{max-width:850px;padding:48px;text-align:center}.eyebrow{letter-spacing:4px;color:var(--accent);font-size:12px;font-weight:800}.title{font-size:clamp(48px,9vw,92px);margin:12px 0 0;line-height:.9}.subtitle{color:var(--muted);font-size:18px;line-height:1.6;max-width:650px;margin:24px auto 30px}
+.primary,.secondary,.danger{border:0;border-radius:12px;padding:13px 20px;cursor:pointer;font-weight:800}.primary{background:var(--accent);color:white}.secondary{background:#222a40;color:white;border:1px solid var(--line)}.danger{background:#542033;color:#ffd8df}
+#game{display:none;max-width:1300px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:15px}.brand{font-weight:900;letter-spacing:2px}.stats{display:flex;gap:10px;flex-wrap:wrap}.pill{background:var(--panel);border:1px solid var(--line);padding:8px 12px;border-radius:999px;color:var(--muted);font-size:13px}.pill b{color:white}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:15px}.room{position:relative;min-height:600px;background:linear-gradient(145deg,#151b2c,#0e1220);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.room:before{content:"";position:absolute;inset:30px;border:2px solid #303951;border-bottom:8px solid #252d42;border-radius:8px;opacity:.5}
+.roomlabel{position:absolute;left:24px;top:18px;color:var(--muted);font-size:12px;letter-spacing:2px}
+.object{position:absolute;background:#1a2132;border:1px solid #3b4561;color:white;border-radius:12px;padding:11px 13px;cursor:pointer;transition:.2s;box-shadow:0 8px 25px #0005}.object:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 10px 30px #0008}
+.clock{top:65px;left:42%;font-size:22px}.camera{top:150px;right:8%}.light{top:245px;left:7%}.door{bottom:70px;left:9%}.phone{bottom:105px;right:12%}.bin{bottom:55px;left:42%}.notebook{top:320px;right:40%}.painting{top:145px;left:40%}
+.suspects{position:absolute;inset:0;pointer-events:none}.suspect{position:absolute;text-align:center;pointer-events:auto;cursor:pointer}.avatar{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:#222b42;border:2px solid #4a5575;font-size:27px;margin:auto}.sname{font-size:12px;margin-top:6px}.s1{top:27%;left:18%}.s2{top:28%;left:65%}.s3{top:55%;left:24%}.s4{top:56%;left:68%}.s5{top:42%;left:46%}
+.side{display:flex;flex-direction:column;gap:15px}.panel{padding:20px}.panel h2,.panel h3{margin:0 0 12px}.caseText{color:var(--muted);line-height:1.5}.clues{display:grid;gap:8px;max-height:260px;overflow:auto}.clue{padding:10px 12px;background:#0d111c;border:1px solid #252d42;border-radius:10px;color:#dce2f3;font-size:13px}.clue small{color:var(--accent);display:block;margin-bottom:4px}
+.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:20px;z-index:5}.modal.show{display:flex}.modalbox{max-width:680px;width:100%;padding:26px}.modalbox h2{margin-top:0}.modalbox p{color:#c3cbe0;line-height:1.65}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.suspectGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.suspectBtn{padding:14px;text-align:left;background:#171d2d;border:1px solid #313a55;color:white;border-radius:12px;cursor:pointer}.suspectBtn:hover{border-color:var(--accent)}
+.result{text-align:center;max-width:750px;padding:42px}.score{font-size:70px;font-weight:900;color:var(--gold)}.tiny{color:var(--muted);font-size:13px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.room{min-height:520px}.side{display:grid;grid-template-columns:1fr}.title{font-size:58px}}
 </style>
 </head>
 <body>
-<main class="app">
-<header>
-  <div class="logo">⌘ 🔐</div>
-  <h1>CYBER ESCAPE</h1>
-  <div class="subtitle">THE LAST FIREWALL · DEFENDER PROTOCOL</div>
-</header>
-
-<section class="panel">
-  <div id="stats" class="stats hidden">
-    <div class="stat"><small>LEVEL</small><strong id="level">1/3</strong></div>
-    <div class="stat"><small>SCORE</small><strong id="score">0</strong></div>
-    <div class="stat"><small>TIME LEFT</small><strong id="time">120</strong></div>
+<div id="start" class="screen">
+  <div class="card start">
+    <div class="eyebrow">CASE FILE // 047</div>
+    <div class="title">THE<br>LIAR'S ROOM</div>
+    <p class="subtitle">Five people. One incident. A room full of evidence.<br>You cannot interrogate the suspects. Investigate the room, reconstruct the timeline, and decide who is hiding the truth.</p>
+    <button class="primary" onclick="startGame()">ENTER THE ROOM</button>
+    <p class="tiny" style="margin-top:18px">3 cases • clue-based deduction • limited investigations • multiple endings</p>
   </div>
-  <div id="progress" class="progress hidden"><div id="bar"></div></div>
+</div>
 
-  <section id="intro">
-    <h2>⚠ SYSTEM BREACH DETECTED</h2>
-    <p>You are the last cyber defender in a compromised digital facility. Three security zones are locked. Solve the challenges, restore the network, and stop the simulated attack before time runs out.</p>
-    <p><strong>Your mission:</strong> Detect phishing, secure the password vault, and defend the final firewall.</p>
-    <p>Correct answer: +100 points. Incorrect answer: −10 seconds.</p>
-    <button class="primary" id="start">▶ START MISSION</button>
-  </section>
+<div id="game">
+  <div class="top">
+    <div class="brand">THE LIAR'S ROOM <span class="tiny">/ INVESTIGATION MODE</span></div>
+    <div class="stats">
+      <div class="pill">CASE <b id="caseNo">047</b></div>
+      <div class="pill">INVESTIGATIONS <b id="moves">10</b></div>
+      <div class="pill">CLUES <b id="clueCount">0</b></div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="room">
+      <div class="roomlabel">ROOM 204 // INCIDENT WINDOW 20:00–20:30</div>
+      <button class="object clock" onclick="inspect('clock')">🕰️ CLOCK</button>
+      <button class="object camera" onclick="inspect('camera')">📷 CAMERA</button>
+      <button class="object light" onclick="inspect('light')">💡 LIGHT</button>
+      <button class="object door" onclick="inspect('door')">🚪 DOOR</button>
+      <button class="object phone" onclick="inspect('phone')">📱 PHONE</button>
+      <button class="object bin" onclick="inspect('bin')">🗑️ BIN</button>
+      <button class="object notebook" onclick="inspect('notebook')">📝 NOTEBOOK</button>
+      <button class="object painting" onclick="inspect('painting')">🖼️ PAINTING</button>
+      <div class="suspects">
+        <div class="suspect s1" onclick="inspect('asha')"><div class="avatar">👩</div><div class="sname">ASHA</div></div>
+        <div class="suspect s2" onclick="inspect('ravi')"><div class="avatar">👨</div><div class="sname">RAVI</div></div>
+        <div class="suspect s3" onclick="inspect('meera')"><div class="avatar">👩</div><div class="sname">MEERA</div></div>
+        <div class="suspect s4" onclick="inspect('arjun')"><div class="avatar">👨</div><div class="sname">ARJUN</div></div>
+        <div class="suspect s5" onclick="inspect('kiran')"><div class="avatar">👨</div><div class="sname">KIRAN</div></div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="card panel">
+        <h2>INCIDENT</h2>
+        <p class="caseText" id="incident"></p>
+        <h3 style="margin-top:18px">LAST KNOWN STATEMENTS</h3>
+        <div id="statements" class="caseText"></div>
+        <div class="actions"><button class="danger" onclick="accuse()">MAKE ACCUSATION</button><button class="secondary" onclick="resetCase()">RESET CASE</button></div>
+      </div>
+      <div class="card panel">
+        <h3>CASE BOARD</h3>
+        <div id="clues" class="clues"><div class="tiny">Investigate objects and suspects. Your discoveries appear here.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <section id="game" class="hidden">
-    <div class="subtitle" id="zone"></div>
-    <h2 id="question"></h2>
-    <p id="prompt"></p>
-    <div class="choices" id="choices"></div>
-    <div id="feedback" aria-live="polite">Choose your response.</div>
-    <button id="next" class="primary hidden">CONTINUE →</button>
-  </section>
+<div id="modal" class="modal"><div class="card modalbox">
+  <h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions" class="actions"></div>
+</div></div>
 
-  <section id="end" class="hidden">
-    <h2 id="endTitle"></h2>
-    <p id="endMessage"></p>
-    <p id="finalScore"></p>
-    <div id="learning"></div>
-    <button id="restart" class="primary">↻ PLAY AGAIN</button>
-  </section>
-</section>
-<footer>Educational simulation · No real systems are accessed</footer>
-</main>
+<div id="result" class="screen hidden"><div class="card result">
+  <div class="eyebrow" id="resultEyebrow">CASE CLOSED</div>
+  <h1 id="resultTitle"></h1>
+  <div class="score" id="score"></div>
+  <p id="resultText" class="subtitle"></p>
+  <div id="breakdown" class="caseText"></div>
+  <div class="actions" style="justify-content:center"><button class="primary" onclick="nextCase()">NEXT CASE</button><button class="secondary" onclick="location.reload()">RESTART</button></div>
+</div></div>
 
 <script>
-const levels = [
-  {
-    name: "LEVEL 1 — PHISHING PROTOCOL",
-    title: "The suspicious email",
-    prompt: "An email says your college account will be deleted in 10 minutes. The sender is security@college-login.example and the message asks you to click an unfamiliar link and enter your password. What should you do?",
-    options: [
-      "Click the link quickly to save the account",
-      "Reply with your password to verify identity",
-      "Avoid the link, report the email, and verify through an official channel",
-      "Forward it to all your friends"
-    ],
-    answer: 2,
-    explain: "Correct! Urgency, an unfamiliar sender, and a credential request are warning signs. Verify independently and report suspicious messages."
-  },
-  {
-    name: "LEVEL 2 — PASSWORD VAULT",
-    title: "Unlock the vault",
-    prompt: "Which password strategy is generally the safest?",
-    options: [
-      "Use your name and birth year everywhere",
-      "Reuse one short password on every account",
-      "Use a long, unique password or passphrase for each account, stored in a trusted password manager",
-      "Share your password with a friend for safekeeping"
-    ],
-    answer: 2,
-    explain: "Correct! Long, unique passwords reduce the impact of one account being compromised. A password manager can help you manage them."
-  },
-  {
-    name: "LEVEL 2 — LOGIC LOCK",
-    title: "The security logic puzzle",
-    prompt: "A secure account requires BOTH a password AND a second verification factor. You have the correct password, but you have not completed the second factor. What happens?",
-    options: [
-      "Access is granted because the password is correct",
-      "Access is denied until the second factor is completed",
-      "The second factor is optional",
-      "Anyone can approve the login"
-    ],
-    answer: 1,
-    explain: "Correct! Multi-factor authentication requires the additional factor as well as the password."
-  },
-  {
-    name: "LEVEL 3 — THE LAST FIREWALL",
-    title: "Protect the network",
-    prompt: "Your monitoring system detects unexpected traffic to a server. What is the most responsible first response?",
-    options: [
-      "Disable every security control permanently",
-      "Ignore the alert",
-      "Follow the incident-response process: investigate, contain appropriately, and notify the security team",
-      "Publish all server logs online"
-    ],
-    answer: 2,
-    explain: "Correct! Investigate and follow an authorized incident-response process. Containment should be proportionate and coordinated."
-  },
-  {
-    name: "LEVEL 3 — FINAL DEFENSE",
-    title: "The final decision",
-    prompt: "A critical security update is available for a vulnerable server. What should the defender do?",
-    options: [
-      "Install random software from an unknown website",
-      "Follow the organization's patch process: verify the update, assess impact, back up as appropriate, and deploy safely",
-      "Share administrator credentials with everyone",
-      "Turn off all monitoring"
-    ],
-    answer: 1,
-    explain: "Correct! Verified, planned patching reduces exposure while managing service and operational risks."
-  }
+const cases=[
+{no:"047",incident:"A sealed presentation room was entered by five staff members. At 20:15, a prototype access card vanished from the locked evidence drawer. No alarm was triggered.",
+suspects:{
+asha:"I was reading by the window from 20:05 onward.",
+ravi:"I stayed near the refreshment table. I never touched the lights.",
+meera:"I left the room at 20:10 and returned at 20:25.",
+arjun:"The lights flickered, so I checked the electrical panel around 20:14.",
+kiran:"I was on the sofa working on my laptop."
+},culprit:"meera",
+clues:{
+clock:"The wall clock is 7 minutes slow. Its battery cover was opened recently.",
+camera:"At 20:13 on the camera timestamp, Meera crosses the hallway toward the evidence room. The camera timestamp is accurate.",
+light:"The light switch was turned off at 20:14 and back on at 20:16. Arjun's claim about checking the panel is consistent with the outage.",
+door:"The evidence-room door was opened with a staff badge at 20:14. The badge log lists Meera's badge.",
+phone:"A message on Meera's phone says: 'Meet me by the evidence drawer before 8:15.'",
+bin:"A torn receipt from the refreshment table is found. It proves Ravi was there, but says nothing about the missing card.",
+notebook:"Arjun's maintenance note records 'panel checked 20:14–20:16'.",
+painting:"A reflection in the glass shows Meera near the evidence drawer while the lights were off."
+}},
+{no:"052",incident:"During a rehearsal, the director's antique key disappeared from a locked prop cabinet. Five cast members were in the rehearsal hall.",
+suspects:{
+asha:"I was practicing lines near the stage.",
+ravi:"I was at the sound desk the whole time.",
+meera:"I went backstage for water at 18:22.",
+arjun:"I was fixing a loose chair.",
+kiran:"I stayed near the costume rack."
+},culprit:"kiran",
+clues:{
+clock:"The rehearsal clock is correct; the key disappeared between 18:20 and 18:25.",
+camera:"The camera shows Kiran walking from the costume rack toward the prop cabinet at 18:23.",
+light:"The stage lights were bright during the entire window, so the cabinet was visible.",
+door:"The prop cabinet has a magnetic latch. A costume pin is wedged into it, leaving a small scratch.",
+phone:"Kiran's phone has a photo taken at 18:24. The reflection shows the prop cabinet behind him.",
+bin:"A broken costume pin is in the bin, matching the scratch on the cabinet latch.",
+notebook:"The director's note says the key was present during the 18:20 rehearsal check.",
+painting:"A stage poster hides a spare hook, but it cannot open the cabinet."
+}},
+{no:"061",incident:"A sealed envelope containing the final competition code disappeared from a student lab between 16:00 and 16:20. The lab door remained locked.",
+suspects:{
+asha:"I was printing near the back wall.",
+ravi:"I left at 16:05 to get coffee.",
+meera:"I was organizing files at the main desk.",
+arjun:"I never went near the printer.",
+kiran:"I was testing the lab computer."
+},culprit:"arjun",
+clues:{
+clock:"The lab clock is accurate to the minute.",
+camera:"The printer camera shows Arjun approaching the printer at 16:12.",
+light:"The printer area light was switched on at 16:11.",
+door:"The main door log shows no entry after 16:00; everyone already inside could move freely.",
+phone:"Arjun's phone has a draft message: 'Code copied. Need to hide the envelope.'",
+bin:"A strip of the envelope seal is in the printer-side bin.",
+notebook:"The print queue records a test page from Arjun's account at 16:12.",
+painting:"A reflective monitor shows Arjun standing beside the printer."
+}}
 ];
 
-let index = 0;
-let score = 0;
-let timeLeft = 120;
-let timer = null;
-let locked = false;
-let finished = false;
+let current=0,moves=10,found=new Set(),score=100;
 
-const $ = id => document.getElementById(id);
-const intro = $("intro"), game = $("game"), end = $("end");
-const stats = $("stats"), progress = $("progress");
-
-function show(el) { el.classList.remove("hidden"); }
-function hide(el) { el.classList.add("hidden"); }
-
-function startGame() {
-  clearInterval(timer);
-  index = 0; score = 0; timeLeft = 120;
-  locked = false; finished = false;
-  hide(intro); hide(end);
-  show(game); show(stats); show(progress);
-  timer = setInterval(() => {
-    timeLeft--;
-    $("time").textContent = timeLeft;
-    if (timeLeft <= 0) finish(false);
-  }, 1000);
-  render();
-}
-
-function render() {
-  if (finished) return;
-  locked = false;
-  const item = levels[index];
-  $("level").textContent = Math.min(index + 1, 3) + "/3";
-  $("score").textContent = score;
-  $("time").textContent = timeLeft;
-  $("bar").style.width = (index / levels.length * 100) + "%";
-  $("zone").textContent = item.name;
-  $("question").textContent = item.title;
-  $("prompt").textContent = item.prompt;
-  $("feedback").textContent = "Choose your response.";
-  $("feedback").className = "";
-  $("choices").replaceChildren();
-  hide($("next"));
-
-  item.options.forEach((option, i) => {
-    const button = document.createElement("button");
-    button.textContent = (i + 1) + ". " + option;
-    button.addEventListener("click", () => answer(i));
-    $("choices").appendChild(button);
-  });
-}
-
-function answer(choice) {
-  if (locked || finished) return;
-  locked = true;
-  const item = levels[index];
-  const buttons = [...$("choices").children];
-  buttons.forEach(b => b.disabled = true);
-
-  if (choice === item.answer) {
-    score += 100;
-    $("feedback").textContent = "✓ " + item.explain;
-    $("feedback").className = "good";
-  } else {
-    timeLeft = Math.max(0, timeLeft - 10);
-    $("time").textContent = timeLeft;
-    $("feedback").textContent = "✕ Not quite. " + item.explain +
-      " You lost 10 seconds.";
-    $("feedback").className = "bad";
-  }
-  $("score").textContent = score;
-  if (timeLeft <= 0) {
-    finish(false);
-    return;
-  }
-  show($("next"));
-}
-
-function finish(won) {
-  if (finished) return;
-  finished = true;
-  clearInterval(timer);
-  hide(game); show(end);
-  $("bar").style.width = won ? "100%" : (index / levels.length * 100) + "%";
-  $("endTitle").textContent = won ? "🟢 NETWORK RESTORED" : "🔴 SYSTEM LOCKDOWN";
-  $("endMessage").textContent = won
-    ? "You completed the mission and secured the simulated network!"
-    : "Time ran out before the mission was complete. Review the lessons and try again.";
-  $("finalScore").textContent = "Final score: " + score + " / " +
-    (levels.length * 100) + " · Time remaining: " + timeLeft + " seconds";
-  const rank = score >= 500 ? "CYBER GUARDIAN" :
-               score >= 300 ? "SECURITY ANALYST" : "ROOKIE DEFENDER";
-  $("learning").textContent = "Performance rank: " + rank +
-    ". Remember: verify suspicious messages, use unique passwords and MFA, and follow authorized incident-response and patching procedures.";
-}
-
-$("start").addEventListener("click", startGame);
-$("restart").addEventListener("click", startGame);
-$("next").addEventListener("click", () => {
-  if (finished) return;
-  index++;
-  if (index >= levels.length) finish(true);
-  else render();
-});
+function startGame(){document.getElementById('start').style.display='none';document.getElementById('game').style.display='block';loadCase()}
+function loadCase(){let c=cases[current];moves=10;found=new Set();score=100;document.getElementById('caseNo').textContent=c.no;document.getElementById('moves').textContent=moves;document.getElementById('clueCount').textContent=0;document.getElementById('incident').textContent=c.incident;
+document.getElementById('statements').innerHTML=Object.entries(c.suspects).map(([k,v])=>`<p><b>${k.toUpperCase()}</b>: "${v}"</p>`).join('');
+document.getElementById('clues').innerHTML='<div class="tiny">Investigate objects and suspects. Your discoveries appear here.</div>'}
+function inspect(key){if(found.has(key))return show("ALREADY INSPECTED","You already recorded this clue. Look elsewhere.");if(moves<=0)return show("NO INVESTIGATIONS LEFT","You have used all your investigation actions. Make your accusation.");
+let c=cases[current], text=c.clues[key];if(!text){text="Their statement is available above, but this inspection reveals no new physical evidence."}
+found.add(key);moves--;score=Math.max(0,score-2);document.getElementById('moves').textContent=moves;document.getElementById('clueCount').textContent=found.size;
+if(found.size===1)document.getElementById('clues').innerHTML='';
+let label=key.charAt(0).toUpperCase()+key.slice(1);document.getElementById('clues').insertAdjacentHTML('beforeend',`<div class="clue"><small>${label}</small>${text}</div>`);
+show(label,text)}
+function show(title,text,buttons=[]){document.getElementById('modalTitle').textContent=title;document.getElementById('modalText').textContent=text;let a=document.getElementById('modalActions');a.innerHTML='';buttons.forEach(b=>{let x=document.createElement('button');x.className=b.cls||'secondary';x.textContent=b.text;x.onclick=b.fn;a.appendChild(x)});document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+function accuse(){let names=[['asha','ASHA'],['ravi','RAVI'],['meera','MEERA'],['arjun','ARJUN'],['kiran','KIRAN']];show("WHO IS THE LIAR?", "Choose the person you believe is responsible for the incident.", names.map(([k,n])=>({text:n,cls:'suspectBtn',fn:()=>finish(k)})))}
+function finish(choice){closeModal();let c=cases[current],correct=choice===c.culprit;let bonus=Math.min(25,found.size*3);let final=Math.max(0,score+(correct?bonus:0));document.getElementById('game').style.display='none';document.getElementById('result').classList.remove('hidden');document.getElementById('resultTitle').textContent=correct?'CASE SOLVED':'FALSE ACCUSATION';document.getElementById('score').textContent=final+'%';document.getElementById('resultText').textContent=correct?`You identified ${choice.toUpperCase()} as responsible. Your evidence chain points to the correct timeline.`:`You accused ${choice.toUpperCase()}. The actual responsible person was ${c.culprit.toUpperCase()}.`;
+document.getElementById('breakdown').innerHTML=`<p><b>Actual culprit:</b> ${c.culprit.toUpperCase()}</p><p><b>Evidence collected:</b> ${found.size}</p><p><b>Investigations remaining:</b> ${moves}</p><p><b>Deduction:</b> The correct answer is supported by the room's physical evidence and timeline, not simply by a suspicious statement.</p>`}
+function nextCase(){current=(current+1)%cases.length;document.getElementById('result').classList.add('hidden');document.getElementById('game').style.display='block';loadCase()}
+function resetCase(){loadCase()}
 </script>
 </body>
 </html>
